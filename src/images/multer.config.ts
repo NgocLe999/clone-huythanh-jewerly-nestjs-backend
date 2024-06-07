@@ -5,7 +5,7 @@ import {
 } from '@nestjs/platform-express';
 import fs from 'fs';
 import { diskStorage } from 'multer';
-import path, { join } from 'path';
+import path, { extname, join } from 'path';
 
 @Injectable()
 export class MulterConfigService implements MulterOptionsFactory {
@@ -38,36 +38,13 @@ export class MulterConfigService implements MulterOptionsFactory {
     });
   }
 
-  //   createMulterOptions(): MulterModuleOptions {
-  //     return {
-  //       storage: diskStorage({
-  //         // Địa chỉ lưu file
-  //         destination: (req, file, cb) => {
-  //           const folder = req?.headers?.folder_type ?? 'default'; // Lấy ra tham số truyền vào header. Nếu không truyền thì lưu vào mục deafauls
-  //           this.ensureExists(`public/images/${folder}`); // tạo folder theo header truyền lên
-  //           cb(null, join(this.getRootPath(), `public/images/${folder}`));
-  //         },
-  //         // Tạo file name theo định dạng: BaseName-Date-exeption
-  //         filename: (req, file, cb) => {
-  //           //get image extension
-  //           let extName = path.extname(file.originalname);
-  //           //get image's name (without extension)
-  //           let baseName = path.basename(file.originalname, extName);
-  //           let finalName = `${baseName}-${Date.now()}${extName}`;
-  //           cb(null, finalName);
-  //         },
-  //       }),
-  //     };
-  //   }
-  // }
-
   createMulterOptions(): MulterModuleOptions {
     return {
       storage: diskStorage({
         destination: (req, file, cb) => {
           const folder = req?.headers?.folder_type ?? 'default'; // Lấy ra tham số truyền vào header. Nếu không truyền thì lưu vào mục deafauls
           this.ensureExists(`public/images/${folder}`); // tạo folder theo header truyền lên
-          cb(null, join(this.getRootPath(), `public/images/${folder}`));
+          cb(null, `./public/images/${folder}`);
         },
         filename: (req, file, cb) => {
           //get image extension
@@ -87,6 +64,7 @@ export class MulterConfigService implements MulterOptionsFactory {
           'pdf',
           'doc',
           'docx',
+          'webp',
         ];
         const fileExtension = file.originalname.split('.').pop().toLowerCase();
         const isValidFileType = allowedFileTypes.includes(fileExtension);
@@ -101,7 +79,7 @@ export class MulterConfigService implements MulterOptionsFactory {
         } else cb(null, true);
       },
       limits: {
-        fileSize: 1024 * 1024 * 1, // 1MB
+        fileSize: 1024 * 1024 * 5, // 1MB
       },
     };
   }
