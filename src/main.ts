@@ -2,21 +2,23 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
-// import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { TransformationInterceptor } from './core/transform.interceptor';
 // import cookieParser from 'cookie-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import helmet from 'helmet';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 // import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    rawBody: true,
+  });
 
   const reflector = app.get(Reflector);
 
-  // app.useGlobalGuards(new JwtAuthGuard(reflector));
+  app.useGlobalGuards(new JwtAuthGuard(reflector));
 
   const configService = app.get(ConfigService);
 
@@ -68,6 +70,7 @@ async function bootstrap() {
       persistAuthorization: true,
     },
   });
+  app.useBodyParser('json');
   await app.listen(port);
 }
 bootstrap();

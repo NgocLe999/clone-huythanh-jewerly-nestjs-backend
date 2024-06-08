@@ -26,7 +26,7 @@ export class ImagesController {
   @ResponseMessage('Upload File Succesfully')
   @Post('upload')
   @UseInterceptors(FilesInterceptor('files'))
-  // @UseFilters(new HttpExceptionFilter())
+  @UseFilters(new HttpExceptionFilter())
   create(
     @Body() createImageDto: CreateImageDto,
     @UploadedFiles() files: Array<Express.Multer.File>,

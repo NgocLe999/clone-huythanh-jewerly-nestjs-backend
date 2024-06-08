@@ -8,19 +8,21 @@ export class CreateProductDto {
   @IsNotEmpty({ message: 'description không được để trống' })
   description: string;
 
-  @IsNotEmpty({ message: 'featured_image không được để trống' })
-  featured_image: [mongoose.Schema.Types.ObjectId];
-
   @IsNotEmpty({ message: 'handle không được để trống' })
   handle: string;
 
-  @IsArray()
-  @IsNotEmpty({ message: 'image không được để trống' })
-  image: [mongoose.Schema.Types.ObjectId];
+  @IsNotEmpty({ message: 'name không được để trống' })
+  name: string;
 
-  @IsArray()
-  @IsNotEmpty({ message: 'media không được để trống' })
-  media: [mongoose.Schema.Types.ObjectId];
+  // @IsNotEmpty({ message: 'featured_image không được để trống' })
+  // featured_image: mongoose.Schema.Types.ObjectId;
+  // @IsArray()
+  // @IsNotEmpty({ message: 'image không được để trống' })
+  // image: [mongoose.Schema.Types.ObjectId | null];
+
+  // @IsArray()
+  // @IsNotEmpty({ message: 'media không được để trống' })
+  // media: [mongoose.Schema.Types.ObjectId | null];
 
   @IsNotEmpty({ message: 'price không được để trống' })
   price: number;
@@ -57,4 +59,7 @@ export class CreateProductDto {
 
   @IsNotEmpty({ message: 'vendor không được để trống' })
   vendor: string;
+
+  @IsNotEmpty({ message: 'vendor không được để trống' })
+  media_type: string;
 }

@@ -1,34 +1,61 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Public, ResponseMessage, User } from 'src/decorators/customize';
+import { ApiTags } from '@nestjs/swagger';
+import { IUser } from './user.interface';
 
-@Controller('users')
+@ApiTags('users')
+@Controller('users') // Xuất phát với link /users
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  @ResponseMessage('Created New User Succesfully')
+  async create(@User() user: IUser, @Body() createUserDto: CreateUserDto) {
+    let newUser = await this.usersService.createUser(createUserDto, user);
+    return {
+      _id: newUser._id,
+      createdAt: newUser?.createdAt,
+    };
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  @ResponseMessage('Fetch All User Succesfully')
+  findAll(
+    @Query('current') currentPage: number,
+    @Query('pageSize') limit: number,
+    @Query() queryString: string,
+  ) {
+    return this.usersService.findAll(currentPage, limit, queryString);
   }
 
+  @Public()
   @Get(':id')
+  @ResponseMessage('Fetch User By Id Succesfully')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+    return this.usersService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
-  }
+  // @Patch()
+  // @ResponseMessage('Update User Succesfully')
+  // update(@Body() updateUserDto: UpdateUserDto, @User() user: IUser) {
+  //   return this.usersService.updateUser(updateUserDto, user);
+  // }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @ResponseMessage('Delete User Succesfully')
+  remove(@Param('id') id: string, @User() user: IUser) {
+    return this.usersService.deleteUser(id, user);
   }
 }

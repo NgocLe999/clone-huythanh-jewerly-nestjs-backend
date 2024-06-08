@@ -13,17 +13,20 @@ export class Product {
   description: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Image.name })
-  featured_image: [mongoose.Schema.Types.ObjectId]; // hình ảnh nổi bật
+  featured_image: mongoose.Schema.Types.ObjectId | null; // hình ảnh nổi bật
 
   @Prop({ isRequired: true })
   handle: string;
 
   @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: Image.name }])
-  image: [mongoose.Schema.Types.ObjectId];
+  image: [mongoose.Schema.Types.ObjectId] | null;
 
   @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: Image.name }])
-  media: [mongoose.Schema.Types.ObjectId];
+  media: [mongoose.Schema.Types.ObjectId] | null;
 
+  @Prop({ isRequired: true })
+  name: string;
+  
   @Prop({ isRequired: true })
   price: number;
 

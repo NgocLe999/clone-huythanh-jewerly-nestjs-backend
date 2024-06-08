@@ -8,9 +8,12 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ProductModule } from './product/product.module';
 import { MediaModule } from './media/media.module';
 import { PromotionsModule } from './promotions/promotions.module';
-import { UsersModule } from './users/users.module';
 import { ImagesModule } from './images/images.module';
 import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
+import { AuthModule } from './auth/auth.module';
+import { DatabaseModule } from './database/database.module';
+
+
 
 @Module({
   imports: [
@@ -37,7 +40,9 @@ import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
     ImagesModule,
     MediaModule,
     PromotionsModule,
-    UsersModule,
+    AuthModule,
+    DatabaseModule,
+
   ],
   controllers: [AppController],
   providers: [AppService],
