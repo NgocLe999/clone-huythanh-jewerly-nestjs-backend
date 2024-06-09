@@ -45,11 +45,11 @@ export class AuthController {
   }
 
   // Client - Bearer Token (Access Token) - JwtStrategy - Decode - Bind (req.user) - @User// Trường hợp access_token còn hạn.
-  // @ResponseMessage('Get User Succesfully')
-  // @Get('account')
-  // async handleGetUser(@User() user: IUser) {
-  //   return { user };
-  // }
+  @ResponseMessage('Get User Succesfully')
+  @Get('account')
+  async handleGetUser(@User() user: IUser) {
+    return { user };
+  }
 
   // Trường hợp access_token hết hạn.
   @Public()

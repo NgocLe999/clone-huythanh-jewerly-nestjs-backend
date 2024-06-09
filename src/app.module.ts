@@ -6,12 +6,12 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ProductModule } from './product/product.module';
-import { MediaModule } from './media/media.module';
 import { PromotionsModule } from './promotions/promotions.module';
 import { ImagesModule } from './images/images.module';
 import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 import { AuthModule } from './auth/auth.module';
 import { DatabaseModule } from './database/database.module';
+import { CollectionModule } from './collection/collection.module';
 
 
 
@@ -38,10 +38,10 @@ import { DatabaseModule } from './database/database.module';
     ConfigModule.forRoot({ isGlobal: true }),
     ProductModule,
     ImagesModule,
-    MediaModule,
     PromotionsModule,
     AuthModule,
     DatabaseModule,
+    CollectionModule,
 
   ],
   controllers: [AppController],

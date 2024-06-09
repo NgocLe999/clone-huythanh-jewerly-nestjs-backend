@@ -14,10 +14,11 @@ import {
 import { ImagesService } from './images.service';
 import { CreateImageDto } from './dto/create-image.dto';
 import { UpdateImageDto } from './dto/update-image.dto';
-import { ResponseMessage } from 'src/decorators/customize';
+import { ResponseMessage, User } from 'src/decorators/customize';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { HttpExceptionFilter } from 'src/core/http-exception.filter';
 import * as fs from 'fs';
+import { IUser } from 'src/users/user.interface';
 
 @Controller('images')
 export class ImagesController {

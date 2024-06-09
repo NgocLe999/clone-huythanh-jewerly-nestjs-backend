@@ -6,6 +6,7 @@ import { Image, ImageDocument } from './schemas/image.schema';
 import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import path from 'path';
 import * as fs from 'fs';
+import { IUser } from 'src/users/user.interface';
 
 @Injectable()
 export class ImagesService {
@@ -13,7 +14,7 @@ export class ImagesService {
     @InjectModel(Image.name) private ImageModel: SoftDeleteModel<ImageDocument>,
   ) {}
 
-  async create(response: any, createImageDto: CreateImageDto) {
+  async create(response: any, createImageDto: CreateImageDto,) {
     const image = response.map((res: any, index: number) => ({
       alt: null,
       src: res.path.split('\\').slice(1).join('/'),

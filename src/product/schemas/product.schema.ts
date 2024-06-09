@@ -19,14 +19,14 @@ export class Product {
   handle: string;
 
   @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: Image.name }])
-  image: [mongoose.Schema.Types.ObjectId] | null;
+  image: [mongoose.Schema.Types.ObjectId] | [];
 
   @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: Image.name }])
-  media: [mongoose.Schema.Types.ObjectId] | null;
+  media: [mongoose.Schema.Types.ObjectId] | [];
 
   @Prop({ isRequired: true })
   name: string;
-  
+
   @Prop({ isRequired: true })
   price: number;
 
@@ -62,6 +62,9 @@ export class Product {
 
   @Prop()
   sole_quantity: number;
+
+  @Prop()
+  collection: string;
 
   @Prop({ type: Object })
   createdBy: {

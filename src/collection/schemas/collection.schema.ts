@@ -1,25 +1,17 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
+import { Product } from 'src/product/schemas/product.schema';
 
-export type MediaDocument = HydratedDocument<Media>;
+export type CollectionDocument = HydratedDocument<Collection>;
+
 @Schema({ timestamps: true })
-export class Media {
-//   @Prop()
-//   id: number;
+export class Collection {
+    
+  @Prop({ isRequired: true })
+  name: string;
 
-  @Prop()
-  alt: string;
-
-  @Prop()
-  position: number;
-
-  @Prop()
-  media_type: string;
-
-  @Prop({ type: Object })
-  preview_image: {
-    src: string;
-  };
+  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: Product.name }])
+  product: [mongoose.Schema.Types.ObjectId] | [];
 
   @Prop({ type: Object })
   createdBy: {
@@ -51,4 +43,4 @@ export class Media {
   @Prop()
   deletedAt: Date;
 }
-export const MediaModel = SchemaFactory.createForClass(Media);
+export const CollectionModel = SchemaFactory.createForClass(Collection);

@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { TransformationInterceptor } from './core/transform.interceptor';
-// import cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import helmet from 'helmet';
@@ -33,7 +33,7 @@ async function bootstrap() {
   });
 
   //config cookies
-  // app.use(cookieParser());
+  app.use(cookieParser());
 
   //config cors
   app.enableCors({

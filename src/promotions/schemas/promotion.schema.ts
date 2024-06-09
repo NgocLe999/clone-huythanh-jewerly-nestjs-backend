@@ -13,9 +13,6 @@ export class Promotion {
   @Prop()
   code: string;
 
-  @Prop({ type: mongoose.Schema.Types.Array, ref: 'Condition' })
-  conditions: mongoose.Schema.Types.ObjectId;
-
   @Prop()
   description: string;
 
@@ -41,13 +38,40 @@ export class Promotion {
   limit: number;
 
   @Prop()
-  savings: number;
-
-  @Prop()
   show_on_website: boolean;
 
   @Prop()
   used: number;
+
+  @Prop({ type: Object })
+  createdBy: {
+    _id: mongoose.Schema.Types.ObjectId;
+    email: string;
+  };
+
+  @Prop({ type: Object })
+  deletedBy: {
+    _id: mongoose.Schema.Types.ObjectId;
+    email: string;
+  };
+
+  @Prop({ type: Object })
+  updatedBy: {
+    _id: mongoose.Schema.Types.ObjectId;
+    email: string;
+  };
+
+  @Prop()
+  deletedAt: Date;
+
+  @Prop()
+  createdAt: Date;
+
+  @Prop()
+  updatedAt: Date;
+
+  @Prop()
+  isDeleted: boolean;
 }
 
 export const PromotionModel = SchemaFactory.createForClass(Promotion);

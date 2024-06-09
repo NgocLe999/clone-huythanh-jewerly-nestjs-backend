@@ -18,11 +18,12 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ImagesService } from 'src/images/images.service';
 import { ImagesAlbum } from 'src/images/images.interface';
-import { ResponseMessage } from 'src/decorators/customize';
+import { ResponseMessage, User } from 'src/decorators/customize';
 import { Request } from 'express';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { HttpExceptionFilter } from 'src/core/http-exception.filter';
 import { CreateImageDto } from 'src/images/dto/create-image.dto';
+import { IUser } from 'src/users/user.interface';
 
 @Controller('product')
 export class ProductController {
@@ -38,6 +39,7 @@ export class ProductController {
   async create(
     @Body() createProductDto: CreateProductDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
+    @User() user: IUser,
   ) {
     const response = [];
     files.forEach((file) => {
@@ -51,7 +53,7 @@ export class ProductController {
       response,
       createProductDto.media_type as unknown as CreateImageDto,
     );
-    return this.productService.create(createProductDto, images);
+    return this.productService.create(createProductDto, images, user);
   }
 
   @Get()
@@ -63,7 +65,6 @@ export class ProductController {
   ) {
     return this.productService.findAll(currentPage, pageSize, queryString);
   }
-
 
   @Get(':id')
   findOne(@Param('id') id: string) {
@@ -78,6 +79,7 @@ export class ProductController {
     @Param('id') id: string,
     @Body() updateProductDto: UpdateProductDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
+    @User() user: IUser,
   ) {
     const response = [];
     files.forEach((file) => {
@@ -91,11 +93,11 @@ export class ProductController {
       response,
       updateProductDto.media_type as unknown as CreateImageDto,
     );
-    return this.productService.update(id, updateProductDto, images);
+    return this.productService.update(id, updateProductDto, images, user);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.productService.remove(id);
+  remove(@Param('id') id: string, @User() user: IUser) {
+    return this.productService.remove(id, user);
   }
 }

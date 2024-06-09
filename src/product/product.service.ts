@@ -8,6 +8,11 @@ import { Product } from './schemas/product.schema';
 import { ObjectId } from 'mongodb';
 import { Request } from 'express';
 import aqp from 'api-query-params';
+import { IUser } from 'src/users/user.interface';
+import {
+  Collection,
+  CollectionDocument,
+} from 'src/collection/schemas/collection.schema';
 @Injectable()
 export class ProductService {
   constructor(
@@ -15,21 +20,50 @@ export class ProductService {
 
     @InjectModel(Product.name)
     private ProductModel: SoftDeleteModel<ImageDocument>,
+
+    @InjectModel(Collection.name)
+    private CollectionModel: SoftDeleteModel<CollectionDocument>,
   ) {}
 
-  async create(createProductDto: CreateProductDto, images: any) {
+  async create(createProductDto: CreateProductDto, images: any, user: IUser) {
     // console.log('>> check image: ', images);
     const id_image = images.map((image: any) => image._id);
 
-    return await this.ProductModel.create({
+    let newProduct = await this.ProductModel.create({
       ...createProductDto,
       image: id_image,
       media: id_image,
       featured_image: id_image[0],
+      createdBy: {
+        _id: user._id,
+        email: user.email,
+      },
     });
+    let isExistCollection = await this.CollectionModel.findOne({
+      name: newProduct.collection,
+    });
+    if (isExistCollection) {
+      await this.CollectionModel.updateOne({
+        $push: {
+          product: newProduct._id,
+        },
+      });
+    } else {
+      await this.CollectionModel.create({
+        name: newProduct.collection,
+        $push: {
+          product: newProduct._id,
+        },
+      });
+    }
+    return newProduct;
   }
 
-  async findAll(currentPagePage: number, pageSize: number, queryString: string) {
+  async findAll(
+    currentPage: number,
+    pageSize: number,
+    queryString: string,
+  ) {
     const { filter, population } = aqp(queryString);
     console.log('>>> check: ', filter, population);
 
@@ -37,7 +71,7 @@ export class ProductService {
     delete filter.pageSize;
 
     let { sort } = aqp(queryString);
-    let offset = (+currentPagePage - 1) * +pageSize;
+    let offset = (+currentPage - 1) * +pageSize;
     let defaultLimit = +pageSize ? +pageSize : 10;
 
     const totalItems = (await this.ProductModel.find(filter)).length;
@@ -52,7 +86,7 @@ export class ProductService {
 
     return {
       meta: {
-        currentPage: currentPagePage, //trang hiện tại
+        currentPage: currentPage, //trang hiện tại
         pageSize: pageSize, //số lượng bản ghi đã lấy
         pages: totalPages, //tổng số trang với điều kiện query
         total: totalItems, // tổng số phần tử (số bản ghi)
@@ -78,7 +112,12 @@ export class ProductService {
     ]);
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto, images: any) {
+  async update(
+    id: string,
+    updateProductDto: UpdateProductDto,
+    images: any,
+    user: IUser,
+  ) {
     if (images) {
       const id_image = images.map((image: any) => image._id);
       return await this.ProductModel.updateOne(
@@ -89,6 +128,10 @@ export class ProductService {
           $push: {
             image: id_image,
             media: id_image,
+          },
+          updatedAt: {
+            _id: user._id,
+            email: user.email,
           },
         },
         { upsert: true },
@@ -102,16 +145,16 @@ export class ProductService {
     );
   }
 
-  async remove(id: string) {
-    // await this.ProductModel.updateOne(
-    //   { _id: id },
-    //   // {
-    //   //   deletedBy: {
-    //   //     _id: user._id,
-    //   //     email: user.email,
-    //   //   },
-    //   // },
-    // );
+  async remove(id: string, user: IUser) {
+    await this.ProductModel.updateOne(
+      { _id: id },
+      {
+        deletedBy: {
+          _id: user._id,
+          email: user.email,
+        },
+      },
+    );
     return await this.ProductModel.softDelete({ _id: id });
   }
 }

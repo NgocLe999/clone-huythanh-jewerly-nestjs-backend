@@ -57,6 +57,9 @@ export class CreateProductDto {
   @IsNotEmpty({ message: 'sole_quantity không được để trống' })
   sole_quantity: number;
 
+  @IsNotEmpty({ message: 'colletion không được để trống' })
+  collection: string;
+
   @IsNotEmpty({ message: 'vendor không được để trống' })
   vendor: string;
 
