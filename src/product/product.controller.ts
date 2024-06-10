@@ -24,17 +24,19 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { HttpExceptionFilter } from 'src/core/http-exception.filter';
 import { CreateImageDto } from 'src/images/dto/create-image.dto';
 import { IUser } from 'src/users/user.interface';
+import { PromotionsService } from 'src/promotions/promotions.service';
 
 @Controller('product')
 export class ProductController {
   constructor(
     private productService: ProductService,
     private imageService: ImagesService,
+    private promotionsService: PromotionsService,
   ) {}
 
   @ResponseMessage('Create Product Information Successfully')
   @Post()
-  @UseFilters(new HttpExceptionFilter())
+  // @UseFilters(new HttpExceptionFilter())
   @UseInterceptors(FilesInterceptor('files'))
   async create(
     @Body() createProductDto: CreateProductDto,
@@ -64,6 +66,12 @@ export class ProductController {
     @Query() queryString: string,
   ) {
     return this.productService.findAll(currentPage, pageSize, queryString);
+  }
+
+
+  @Post('name')
+  findProductByName(@Query() queryString: string) {
+    return this.productService.findProductByName(queryString)
   }
 
   @Get(':id')

@@ -61,6 +61,9 @@ export class CreateProductDto {
   collection: string;
 
   @IsNotEmpty({ message: 'vendor không được để trống' })
+  promotion: string;
+
+  @IsNotEmpty({ message: 'vendor không được để trống' })
   vendor: string;
 
   @IsNotEmpty({ message: 'vendor không được để trống' })

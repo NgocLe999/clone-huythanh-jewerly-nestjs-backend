@@ -13,6 +13,11 @@ import {
   Collection,
   CollectionDocument,
 } from 'src/collection/schemas/collection.schema';
+import {
+  Promotion,
+  PromotionDocument,
+} from 'src/promotions/schemas/promotion.schema';
+import { PromotionsService } from 'src/promotions/promotions.service';
 @Injectable()
 export class ProductService {
   constructor(
@@ -23,12 +28,13 @@ export class ProductService {
 
     @InjectModel(Collection.name)
     private CollectionModel: SoftDeleteModel<CollectionDocument>,
+
+    @InjectModel(Promotion.name)
+    private PromotionModel: SoftDeleteModel<PromotionDocument>,
   ) {}
 
   async create(createProductDto: CreateProductDto, images: any, user: IUser) {
-    // console.log('>> check image: ', images);
     const id_image = images.map((image: any) => image._id);
-
     let newProduct = await this.ProductModel.create({
       ...createProductDto,
       image: id_image,
@@ -39,6 +45,18 @@ export class ProductService {
         email: user.email,
       },
     });
+    if (newProduct) {
+      await this.PromotionModel.updateOne(
+        { _id: createProductDto.promotion },
+        {
+          $push: {
+            //@ts-ignore
+            entitled_products: newProduct.promotion,
+          },
+        },
+      );
+    }
+
     let isExistCollection = await this.CollectionModel.findOne({
       name: newProduct.collection,
     });
@@ -59,13 +77,9 @@ export class ProductService {
     return newProduct;
   }
 
-  async findAll(
-    currentPage: number,
-    pageSize: number,
-    queryString: string,
-  ) {
+  async findAll(currentPage: number, pageSize: number, queryString: string) {
     const { filter, population } = aqp(queryString);
-    console.log('>>> check: ', filter, population);
+    // console.log('>>> check: ', filter, population);
 
     delete filter.currentPage;
     delete filter.pageSize;
@@ -95,6 +109,12 @@ export class ProductService {
     };
   }
 
+  async findProductByName(queryString: string) {
+    const { filter } = aqp(queryString);
+    console.log('filer', filter);
+
+    // await this.ProductModel.find;
+  }
   async findOne(id: string) {
     return await this.ProductModel.findOne({ _id: id }).populate([
       {
@@ -108,6 +128,10 @@ export class ProductService {
       {
         path: 'featured_image',
         select: { src: 1 },
+      },
+      {
+        path: 'promotion',
+        select: { name: 1 },
       },
     ]);
   }

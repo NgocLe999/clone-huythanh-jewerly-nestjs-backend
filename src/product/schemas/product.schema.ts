@@ -2,8 +2,9 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { spec } from 'node:test/reporters';
 import { Image } from 'src/images/schemas/image.schema';
+import { Promotion } from 'src/promotions/schemas/promotion.schema';
 
-export type JobsDocument = HydratedDocument<Product>;
+export type ProductDocument = HydratedDocument<Product>;
 @Schema({ timestamps: true })
 export class Product {
   @Prop({ isRequired: true })
@@ -65,6 +66,9 @@ export class Product {
 
   @Prop()
   collection: string;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Promotion.name })
+  promotion: mongoose.Schema.Types.ObjectId ;
 
   @Prop({ type: Object })
   createdBy: {

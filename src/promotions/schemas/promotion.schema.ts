@@ -1,13 +1,18 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
+import { Image } from 'src/images/schemas/image.schema';
+import { Product } from 'src/product/schemas/product.schema';
 
 export type PromotionDocument = HydratedDocument<Promotion>;
 @Schema({ timestamps: true })
 export class Promotion {
-  @Prop()
+  @Prop({ isRequired: true })
+  name: string;
+
+  @Prop({ isRequired: true })
   allowcoupon: number;
 
-  @Prop()
+  @Prop({ isRequired: true })
   amount: number;
 
   @Prop()
@@ -16,14 +21,14 @@ export class Promotion {
   @Prop()
   description: string;
 
-  @Prop()
+  @Prop({ isRequired: true })
   start_date: Date;
 
-  @Prop()
+  @Prop({ isRequired: true })
   end_date: Date;
 
-  @Prop({ type: mongoose.Schema.Types.Array, ref: 'Product' })
-  entitled_products: mongoose.Schema.Types.ObjectId;
+  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }])
+  entitled_products: [mongoose.Schema.Types.ObjectId] | [];
 
   @Prop()
   isLimit: boolean;
@@ -40,7 +45,7 @@ export class Promotion {
   @Prop()
   show_on_website: boolean;
 
-  @Prop()
+  @Prop({ isRequired: true })
   used: number;
 
   @Prop({ type: Object })
