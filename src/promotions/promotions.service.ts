@@ -8,6 +8,7 @@ import { IUser } from 'src/users/user.interface';
 import { Product, ProductDocument } from 'src/product/schemas/product.schema';
 import { ProductService } from 'src/product/product.service';
 import mongoose from 'mongoose';
+import aqp from 'api-query-params';
 
 @Injectable()
 export class PromotionsService {
@@ -17,6 +18,8 @@ export class PromotionsService {
 
     @InjectModel(Product.name)
     private ProductModel: SoftDeleteModel<ProductDocument>,
+
+    private productService: ProductService,
   ) {}
 
   async create(createPromotionDto: CreatePromotionDto, user: IUser) {
@@ -33,20 +36,23 @@ export class PromotionsService {
     return `This action returns all promotions`;
   }
 
-  findOne(id: string) {
-    return this.PromotionModel.findOne({ _id: id }).populate({
+  async findOne(id: string) {
+    return await this.PromotionModel.findOne({ _id: id }).populate({
       path: 'entitled_products',
       select: { name: 1 },
     });
   }
-
-
 
   async update(
     id: string,
     updatePromotionDto: UpdatePromotionDto,
     user: IUser,
   ) {
+    // const product = await this.ProductModel.find({
+    //   _id: { $in: [updatePromotionDto.entitled_products] },
+    // });
+    // console.log('check product', product);
+
     return await this.PromotionModel.updateOne(
       { _id: id },
       {
@@ -57,6 +63,28 @@ export class PromotionsService {
         },
       },
     );
+  }
+
+  async updateProduct(product_id: string, id: string, user: IUser) {
+    const promotion = await this.PromotionModel.findOne({ _id: id });
+    const currentId = promotion.entitled_products;
+    // console.log('check promotion: ', promotion.entitled_products);
+    console.log('check curret', currentId);
+
+    const products = await this.productService.findProductById(product_id);
+
+    const addIdProduct = products.map((product) => product._id);
+
+    /// Logic kiểm tra id product đã có hay chưa mới push vào ---> frontend
+    const addProduct = await this.PromotionModel.updateOne(
+      { _id: id },
+      {
+        $push: {
+          entitled_products: addIdProduct,
+        },
+      },
+    );
+    return addProduct;
   }
 
   async remove(id: string, user: IUser) {

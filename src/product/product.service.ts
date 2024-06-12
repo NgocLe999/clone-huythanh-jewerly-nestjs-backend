@@ -111,10 +111,19 @@ export class ProductService {
 
   async findProductByName(queryString: string) {
     const { filter } = aqp(queryString);
-    console.log('filer', filter);
+    // const arrayQuery = Object.keys(name).map((key) => name[key]);
+    // console.log('check filter: ', arrayQuery);
 
-    // await this.ProductModel.find;
+    return await this.ProductModel.find(filter);
   }
+
+  async findProductById(_id: string) {
+    console.log(_id);
+    const { filter } = aqp(_id);
+    console.log('check filter: ', filter);
+    return await this.ProductModel.find(filter);
+  }
+
   async findOne(id: string) {
     return await this.ProductModel.findOne({ _id: id }).populate([
       {

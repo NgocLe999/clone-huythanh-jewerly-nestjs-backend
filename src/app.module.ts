@@ -12,8 +12,8 @@ import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 import { AuthModule } from './auth/auth.module';
 import { DatabaseModule } from './database/database.module';
 import { CollectionModule } from './collection/collection.module';
-
-
+import { CustomersModule } from './customers/customers.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -42,7 +42,8 @@ import { CollectionModule } from './collection/collection.module';
     AuthModule,
     DatabaseModule,
     CollectionModule,
-
+    CustomersModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { PromotionsService } from './promotions.service';
 import { CreatePromotionDto } from './dto/create-promotion.dto';
@@ -13,6 +14,7 @@ import { UpdatePromotionDto } from './dto/update-promotion.dto';
 import { ResponseMessage, User } from 'src/decorators/customize';
 import { IUser } from 'src/users/user.interface';
 import { ProductService } from 'src/product/product.service';
+import { ObjectId } from 'mongoose';
 
 @Controller('promotion')
 export class PromotionsController {
@@ -38,12 +40,23 @@ export class PromotionsController {
 
   @ResponseMessage('Update Promotions Successfully')
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updatePromotionDto: UpdatePromotionDto,
     @User() user: IUser,
   ) {
     return this.promotionsService.update(id, updatePromotionDto, user);
+  }
+
+  @ResponseMessage('Update Promotions Successfully')
+  @Post(':id')
+  async updateProduct(
+    @Param('id') id: string,
+    @Body() product_id: string,
+    @User() user: IUser,
+  ) {
+
+    return await this.promotionsService.updateProduct(product_id, id, user);
   }
 
   @Delete(':id')

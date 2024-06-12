@@ -68,12 +68,14 @@ export class ProductController {
     return this.productService.findAll(currentPage, pageSize, queryString);
   }
 
-
   @Post('name')
   findProductByName(@Query() queryString: string) {
-    return this.productService.findProductByName(queryString)
+    return this.productService.findProductByName(queryString);
   }
-
+  @Post('id')
+  findProductById(@Body() _id: string) {
+    return this.productService.findProductById(_id);
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.productService.findOne(id);

@@ -60,7 +60,7 @@ export class CreateProductDto {
   @IsNotEmpty({ message: 'colletion không được để trống' })
   collection: string;
 
-  @IsNotEmpty({ message: 'vendor không được để trống' })
+  @IsNotEmpty({ message: 'promotion không được để trống' })
   promotion: string;
 
   @IsNotEmpty({ message: 'vendor không được để trống' })

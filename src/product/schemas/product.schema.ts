@@ -68,7 +68,7 @@ export class Product {
   collection: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Promotion.name })
-  promotion: mongoose.Schema.Types.ObjectId ;
+  promotion: mongoose.Schema.Types.ObjectId
 
   @Prop({ type: Object })
   createdBy: {
