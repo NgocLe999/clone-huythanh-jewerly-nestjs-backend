@@ -3,34 +3,59 @@ import { MailService } from './mail.service';
 import { MailController } from './mail.controller';
 import { MailerModule, MailerService } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { join } from 'path';
+import { Product, ProductModel } from 'src/product/schemas/product.schema';
+import { Customer, CustomerModel } from 'src/customers/schemas/customer.schema';
+import { ProductService } from 'src/product/product.service';
+import { ImagesService } from 'src/images/images.service';
+import { Image, ImageModel } from 'src/images/schemas/image.schema';
+import {
+  Collection,
+  CollectionModel,
+} from 'src/collection/schemas/collection.schema';
+import {
+  Promotion,
+  PromotionModel,
+} from 'src/promotions/schemas/promotion.schema';
+import { CustomersService } from 'src/customers/customers.service';
 
 @Module({
   imports: [
-    MailerModule.forRoot({
-      transport: {
-        host: 'localhost',
-        port: 1025,
-        ignoreTLS: true,
-        secure: false,
-        auth: {
-          user: process.env.MAILDEV_INCOMING_USER,
-          pass: process.env.MAILDEV_INCOMING_PASS,
+    MailerModule.forRootAsync({
+      useFactory: async (configService: ConfigService) => ({
+        transport: {
+          host: configService.get<string>('EMAIL_HOST'),
+          secure: false,
+          auth: {
+            user: configService.get<string>('EMAIL_AUTH_USER'),
+            pass: configService.get<string>('EMAIL_AUTH_PASSWORD'),
+          },
         },
-      },
-      defaults: {
-        from: '"No Reply" <no-reply@localhost>',
-      },
-      preview: true,
-      template: {
-        dir: process.cwd() + '/template/',
-        adapter: new HandlebarsAdapter(), // or new PugAdapter() or new EjsAdapter()
-        options: {
-          strict: true,
+        preview:
+          configService.get<string>('EMAIL_TEMPLATE_PREVIEW') === 'true'
+            ? true
+            : false,
+        template: {
+          dir: join(__dirname, 'templates'),
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true,
+          },
         },
-      },
+      }),
+      inject: [ConfigService],
     }),
+    MongooseModule.forFeature([
+      { name: Product.name, schema: ProductModel },
+      { name: Customer.name, schema: CustomerModel },
+      { name: Image.name, schema: ImageModel },
+      { name: Collection.name, schema: CollectionModel },
+      { name: Promotion.name, schema: PromotionModel },
+    ]),
   ],
   controllers: [MailController],
-  providers: [MailService],
+  providers: [MailService, ProductService, ImagesService, CustomersService],
 })
 export class MailModule {}

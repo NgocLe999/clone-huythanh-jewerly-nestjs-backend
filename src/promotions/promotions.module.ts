@@ -6,7 +6,10 @@ import { Promotion, PromotionModel } from './schemas/promotion.schema';
 import { ProductService } from 'src/product/product.service';
 import { Product, ProductModel } from 'src/product/schemas/product.schema';
 import { Image, ImageModel } from 'src/images/schemas/image.schema';
-import { Collection, CollectionModel } from 'src/collection/schemas/collection.schema';
+import {
+  Collection,
+  CollectionModel,
+} from 'src/collection/schemas/collection.schema';
 
 @Module({
   imports: [
@@ -19,5 +22,6 @@ import { Collection, CollectionModel } from 'src/collection/schemas/collection.s
   ],
   controllers: [PromotionsController],
   providers: [PromotionsService, ProductService],
+  exports: [PromotionsModule],
 })
 export class PromotionsModule {}

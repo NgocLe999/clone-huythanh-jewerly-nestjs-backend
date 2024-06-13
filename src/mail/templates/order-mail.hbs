@@ -1,0 +1,38 @@
+<html>
+  <head><style>
+      table, td, th { border: 1px solid #ddd; text-align: left; } table {
+      border-collapse: collapse; width: 100%; } th, td { padding: 15px; }
+    </style></head>
+  <body>
+    <h1>Order Confirmation</h1>
+    <p>Hello {{customer.name}},</p>
+    <p>Thank you for your order! Your order number is {{customer._id}}.</p>
+    <p>Your order details are:</p>
+    <table>
+      <thead>
+        <tr>
+          <th style='text-align: center;'>Product</th>
+          <th style='text-align: center;'>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          {{#each customer.product_order}}
+            <td style='text-align: center;'>{{name}}</td>
+            <td style='text-align: center;'>${{price}}</td>
+          {{/each}}
+        </tr>
+      </tbody>
+
+    </table>
+    <p>TOTALPAY: {{totalPay}}</p>
+
+    <p>Shipping to:</p>
+
+    <address>
+      {{customer.address}}
+    </address>
+    {{!-- <p>Total: ${{order.total}}</p> --}}
+    <p>Thank you for shopping with us!</p>
+  </body>
+</html>

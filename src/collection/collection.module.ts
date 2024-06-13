@@ -8,10 +8,10 @@ import { Collection, CollectionModel } from './schemas/collection.schema';
   imports: [
     MongooseModule.forFeature([
       { name: Collection.name, schema: CollectionModel },
-
     ]),
   ],
   controllers: [CollectionController],
   providers: [CollectionService],
+  exports: [CollectionModule],
 })
 export class CollectionModule {}

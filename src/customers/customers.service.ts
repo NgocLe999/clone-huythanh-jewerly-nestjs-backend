@@ -27,7 +27,7 @@ export class CustomersService {
     delete filter.pageSize;
 
     let { sort } = aqp(queryString);
-    console.log('check sort', sort);
+    // console.log('check sort', sort);
 
     let offset = (+currentPage - 1) * +pageSize;
     let defaultLimit = +pageSize ? +pageSize : 10;

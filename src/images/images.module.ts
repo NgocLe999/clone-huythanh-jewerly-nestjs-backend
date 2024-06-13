@@ -15,5 +15,6 @@ import { MulterConfigService } from './multer.config';
   ],
   controllers: [ImagesController],
   providers: [ImagesService],
+  exports:[ImagesModule]
 })
 export class ImagesModule {}
