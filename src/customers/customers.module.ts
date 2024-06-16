@@ -7,10 +7,6 @@ import { Customer, CustomerModel } from './schemas/customer.schema';
 @Module({
   imports: [
     MongooseModule.forFeature([
-      // { name: Promotion.name, schema: PromotionModel },
-      // { name: Product.name, schema: ProductModel },
-      // { name: Image.name, schema: ImageModel },
-      // { name: Collection.name, schema: CollectionModel },
       { name: Customer.name, schema: CustomerModel },
     ]),
   ],

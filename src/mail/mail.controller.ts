@@ -55,7 +55,7 @@ export class MailController {
         });
       }
     }
-    //   console.log('productInfo>>', productInfo);
+
 
     // }
 

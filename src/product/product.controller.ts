@@ -36,7 +36,7 @@ export class ProductController {
 
   @ResponseMessage('Create Product Information Successfully')
   @Post()
-  // @UseFilters(new HttpExceptionFilter())
+  @UseFilters(new HttpExceptionFilter())
   @UseInterceptors(FilesInterceptor('files'))
   async create(
     @Body() createProductDto: CreateProductDto,

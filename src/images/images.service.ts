@@ -14,7 +14,8 @@ export class ImagesService {
     @InjectModel(Image.name) private ImageModel: SoftDeleteModel<ImageDocument>,
   ) {}
 
-  async create(response: any, createImageDto: CreateImageDto,) {
+  async create(response: any, createImageDto: CreateImageDto) {
+
     const image = response.map((res: any, index: number) => ({
       alt: null,
       src: res.path.split('\\').slice(1).join('/'),
