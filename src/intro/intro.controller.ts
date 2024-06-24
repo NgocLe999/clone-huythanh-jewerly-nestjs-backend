@@ -14,7 +14,7 @@ import {
 import { IntroService } from './intro.service';
 import { CreateIntroDto } from './dto/create-intro.dto';
 import { UpdateIntroDto } from './dto/update-intro.dto';
-import { ResponseMessage, User } from 'src/decorators/customize';
+import { Public, ResponseMessage, User } from 'src/decorators/customize';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { HttpExceptionFilter } from 'src/core/http-exception.filter';
 import { IUser } from 'src/users/user.interface';
@@ -35,6 +35,7 @@ export class IntroController {
     return await this.introService.create(createIntroDto, user, pathName);
   }
 
+  @Public()
   @Get()
   findAll() {
     return this.introService.findAll();

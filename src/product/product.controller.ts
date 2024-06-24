@@ -18,7 +18,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ImagesService } from 'src/images/images.service';
 import { ImagesAlbum } from 'src/images/images.interface';
-import { ResponseMessage, User } from 'src/decorators/customize';
+import { Public, ResponseMessage, User } from 'src/decorators/customize';
 import { Request } from 'express';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { HttpExceptionFilter } from 'src/core/http-exception.filter';
@@ -59,6 +59,7 @@ export class ProductController {
   }
 
   @Get()
+  @Public()
   @ResponseMessage('Fetch list product paginate succesfully') // custom decorators
   findAll(
     @Query('currentPage') currentPage: number,
@@ -69,14 +70,17 @@ export class ProductController {
   }
 
   @Post('name')
+  @Public()
   findProductByName(@Query() queryString: string) {
     return this.productService.findProductByName(queryString);
   }
   @Post('id')
+  @Public()
   findProductById(@Body() _id: string) {
     return this.productService.findProductById(_id);
   }
   @Get(':id')
+  @Public()
   findOne(@Param('id') id: string) {
     return this.productService.findOne(id);
   }

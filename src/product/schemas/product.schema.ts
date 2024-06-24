@@ -38,9 +38,6 @@ export class Product {
   price_min: number;
 
   @Prop()
-  tag: [string];
-
-  @Prop()
   title: string;
 
   @Prop()
@@ -51,9 +48,6 @@ export class Product {
 
   @Prop()
   pagetitle: string;
-
-  @Prop()
-  metadescription: string;
 
   @Prop({ isRequired: true })
   vendor: string;
@@ -68,7 +62,16 @@ export class Product {
   collection: string;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Promotion.name })
-  promotion: mongoose.Schema.Types.ObjectId
+  promotion: mongoose.Schema.Types.ObjectId;
+
+  @Prop()
+  code_product: string;
+
+  @Prop()
+  material: string;
+
+  @Prop()
+  weight: string;
 
   @Prop({ type: Object })
   createdBy: {

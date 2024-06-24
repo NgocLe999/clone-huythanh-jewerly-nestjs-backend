@@ -25,7 +25,7 @@ export class IntroService {
   }
 
   findAll() {
-    return `This action returns all intro`;
+    return this.IntroModel.find({});
   }
 
   findOne(id: number) {

@@ -79,7 +79,7 @@ export class ProductService {
 
   async findAll(currentPage: number, pageSize: number, queryString: string) {
     const { filter, population } = aqp(queryString);
-    // console.log('>>> check: ', filter, population);
+    console.log('>>> check: ', filter, population);
 
     delete filter.currentPage;
     delete filter.pageSize;

@@ -31,4 +31,4 @@ volumes:
   mongodb:
 
     # docker compose -p huythanhjewerly up -d
-    # docker-compose up
+    # docker compose up
