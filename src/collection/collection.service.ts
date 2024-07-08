@@ -6,20 +6,29 @@ import { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { Collection, CollectionDocument } from './schemas/collection.schema';
 import { IUser } from 'src/users/user.interface';
 import aqp from 'api-query-params';
+import { Image, ImageDocument } from 'src/images/schemas/image.schema';
+import { Product, ProductDocument } from 'src/product/schemas/product.schema';
 
 @Injectable()
 export class CollectionService {
   constructor(
     @InjectModel(Collection.name)
     private CollectionModel: SoftDeleteModel<CollectionDocument>,
+    @InjectModel(Image.name)
+    private ImageModel: SoftDeleteModel<ImageDocument>,
+    @InjectModel(Product.name)
+    private ProductModel: SoftDeleteModel<ProductDocument>,
   ) {}
 
   async create(createCollectionDto: CreateCollectionDto, user: IUser) {
     return this.CollectionModel.create({
+      $push: {
+        product: createCollectionDto.product,
+      },
       ...createCollectionDto,
       createdBy: {
         _id: user._id,
-        email: user.email,  
+        email: user.email,
       },
     });
   }
@@ -56,8 +65,27 @@ export class CollectionService {
   }
 
   async findOne(id: string) {
-    return this.CollectionModel.findOne({ _id: id }).populate({
+    return await this.CollectionModel.findOne({ _id: id }).populate({
       path: 'product',
+    });
+  }
+
+  async findCollectionsByName(queryString: string) {
+    const { filter } = aqp(queryString);
+    return await this.CollectionModel.find(filter).populate({
+      path: 'product',
+      populate: [
+        {
+          path: 'featured_image',
+          model: 'Image',
+          select: { src: 1 },
+        },
+        {
+          path: 'image',
+          model: 'Image',
+          select: { src: 1 },
+        },
+      ],
     });
   }
 

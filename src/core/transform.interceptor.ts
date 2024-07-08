@@ -11,7 +11,7 @@ import { RESPONSE_MESSAGE } from 'src/decorators/customize';
 
 export interface Response<T> {
   statusCode: number;
-  //   message: string;
+  // message: string;
   data: any;
 }
 
@@ -32,7 +32,7 @@ export class TransformationInterceptor<T>
           '',
         statusCode: context.switchToHttp().getResponse().statusCode,
         data: data,
-        //meta: {}, // if this is supposed to be the actual return then replace {} with data.result
+        // meta: {}, // if this is supposed to be the actual return then replace {} with data.result
       })),
     );
   }

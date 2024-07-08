@@ -6,11 +6,10 @@ export type CollectionDocument = HydratedDocument<Collection>;
 
 @Schema({ timestamps: true })
 export class Collection {
-    
   @Prop({ isRequired: true })
   name: string;
 
-  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: Product.name }])
+  @Prop([{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }])
   product: [mongoose.Schema.Types.ObjectId] | [];
 
   @Prop({ type: Object })

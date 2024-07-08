@@ -33,29 +33,54 @@ export class MailController {
   async handleTestEmail(@Param('id') id: string) {
     const customer = await this.customerService.findOne(id);
     // console.log('check customer', customer.toJSON());
-
     if (customer && customer.product_order.length > 0) {
-      const productPrice = customer.product_order.map(
-        (product: any) => product.price,
+      const products = customer.product_order.map((product: any) => {
+        return {
+          name: product.name,
+          quantity: product.sole_quantity,
+          price: product.price.toLocaleString(),
+          total: (product.price * product.sole_quantity).toLocaleString(),
+        };
+      });
+      // const totalAll = products.map((product)=>parseInt(product.total.replace(/\D/g,'')))
+      const totalPay = products.reduce(
+        (acc, cur) => acc + parseInt(cur.total.replace(/\D/g, '')),
+        0,
       );
-      if (productPrice.length > 0) {
-        const totalPay = productPrice.reduce((accumulator, currentValue) => {
-          accumulator + currentValue;
-        });
 
-        await this.mailerService.sendMail({
-          to: 'lexuanngoc2207@gmail.com',
-          from: '"Support Team" <support@example.com>', // override default from
-          subject: 'Welcome to Nice App! Confirm your Email',
-          template: 'order-mail', // HTML body content
-          context: {
-            customer: customer.toJSON(),
-            totalPay:`${totalPay}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' đ',
-          },
-        });
-      }
+      await this.mailerService.sendMail({
+        to: `${customer.email}`,
+        from: '"huythanhjewerly.com" <support@example.com>', // override default from
+        subject: '[Huy Thanh Jewerly] Xác nhận đơn hàng! ',
+        template: 'order-mail', // HTML body content
+        context: {
+          customer: customer.toJSON(),
+          products: products,
+          totalPay: `${totalPay}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + 'VNĐ',
+        },
+      });
     }
+    // if (customer && customer.product_order.length > 0) {
+    //   const productPrice = customer.product_order.map(
+    //     (product: any) => product.price,
+    //   );
+    //   if (productPrice.length > 0) {
+    //     const totalPay = productPrice.reduce((accumulator, currentValue) => {
+    //       accumulator + currentValue;
+    //     });
 
+    //     await this.mailerService.sendMail({
+    //       to: 'lexuanngoc2207@gmail.com',
+    //       from: '"Support Team" <support@example.com>', // override default from
+    //       subject: 'Welcome to Nice App! Confirm your Email',
+    //       template: 'order-mail', // HTML body content
+    //       context: {
+    //         customer: customer.toJSON(),
+    //         totalPay:`${totalPay}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' đ',
+    //       },
+    //     });
+    //   }
+    // }
 
     // }
 

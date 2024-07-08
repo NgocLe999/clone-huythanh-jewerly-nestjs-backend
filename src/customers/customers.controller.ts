@@ -43,7 +43,7 @@ export class CustomersController {
     @Param('id') id: string,
     @Body() updateCustomerDto: UpdateCustomerDto,
   ) {
-    return this.customersService.update(+id, updateCustomerDto);
+    return this.customersService.update(id, updateCustomerDto);
   }
 
   @ResponseMessage('Delete Order Success')

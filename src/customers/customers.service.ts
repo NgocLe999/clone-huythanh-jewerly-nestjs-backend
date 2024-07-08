@@ -59,7 +59,7 @@ export class CustomersService {
     });
   }
 
-  update(id: number, updateCustomerDto: UpdateCustomerDto) {
+  update(id: string, updateCustomerDto: UpdateCustomerDto) {
     return `This action updates a #${id} customer`;
   }
 

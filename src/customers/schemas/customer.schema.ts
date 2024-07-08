@@ -32,6 +32,8 @@ export class Customer {
 
   @Prop()
   status: string;
+  @Prop()
+  note: string;
 
   @Prop()
   createdAt: Date;

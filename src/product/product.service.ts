@@ -111,10 +111,16 @@ export class ProductService {
 
   async findProductByName(queryString: string) {
     const { filter } = aqp(queryString);
-    // const arrayQuery = Object.keys(name).map((key) => name[key]);
-    // console.log('check filter: ', arrayQuery);
-
-    return await this.ProductModel.find(filter);
+    return await this.ProductModel.find(filter).populate([
+      {
+        path: 'image',
+        select: { src: 1 },
+      },
+      {
+        path: 'featured_image',
+        select: { src: 1 },
+      },
+    ]);
   }
 
   async findProductById(_id: string) {

@@ -74,6 +74,7 @@ export class ProductController {
   findProductByName(@Query() queryString: string) {
     return this.productService.findProductByName(queryString);
   }
+
   @Post('id')
   @Public()
   findProductById(@Body() _id: string) {

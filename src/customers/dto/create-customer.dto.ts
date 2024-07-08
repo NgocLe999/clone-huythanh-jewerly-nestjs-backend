@@ -18,4 +18,10 @@ export class CreateCustomerDto {
 
   @IsNotEmpty()
   quantity: number;
+
+  @IsNotEmpty()
+  note:string
+  
+  @IsNotEmpty()
+  total: string
 }

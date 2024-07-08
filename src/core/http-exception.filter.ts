@@ -18,8 +18,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
       //   statusCode: status,
       //   timestamp: new Date().toISOString(),
       //   path: request.url,
-      error: 'Payload too large',
-      message: 'File to large customize',
+      error: 'Sorry!...An error occurred.',
+      message:
+        'Please check the bearer token || uploaded file size || form data sent to the server.',
       statusCode: status,
     });
   }

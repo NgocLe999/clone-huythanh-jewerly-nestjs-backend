@@ -1,38 +1,208 @@
 <html>
-  <head><style>
-      table, td, th { border: 1px solid #ddd; text-align: left; } table {
-      border-collapse: collapse; width: 100%; } th, td { padding: 15px; }
-    </style></head>
-  <body>
-    <h1>Order Confirmation</h1>
-    <p>Hello {{customer.name}},</p>
-    <p>Thank you for your order! Your order number is {{customer._id}}.</p>
-    <p>Your order details are:</p>
-    <table>
-      <thead>
-        <tr>
-          <th style='text-align: center;'>Product</th>
-          <th style='text-align: center;'>Price</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          {{#each customer.product_order}}
-            <td style='text-align: center;'>{{name}}</td>
-            <td style='text-align: center;'>${{price}}</td>
-          {{/each}}
-        </tr>
-      </tbody>
-
+  <head>
+  </head>
+  <body
+    style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';"
+  >
+    {{!-- <p>Hello {{customer.name}}</p>
+    <p>Cảm ơn bạn đã đặt hàng! Mã order của bạn là: {{customer._id}}</p>
+    <p>Chi tiết đơn đặt hàng:</p>
+    <table style='min-width:600px; min-height: 50vh; margin: 0 auto;'>
+      <tr>
+        <td align='center'>
+          <table
+            style='border:2px solid rgb(140 140 140); border-collapse:collapse; font-family:sans-serif; font-size:0.8rem; width: 800px; letter-spacing:1p;' 
+          >
+            <thead style='background-color:#f9c9c9' bgcolor='rgb(228 240 245)'>
+              <tr>
+                <th
+                  colspan='2'
+                  scope='col'
+                  style='border:1px solid rgb(160 160 160); padding:8px 10px'
+                >STT</th>
+                <th
+                  colspan='2'
+                  scope='col'
+                  style='border:1px solid rgb(160 160 160); padding:8px 10px'
+                >Tên sản phẩm</th>
+                <th
+                  colspan='2'
+                  scope='col'
+                  style='border:1px solid rgb(160 160 160); padding:8px 10px'
+                >Giá</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each customer.product_order}}
+                <tr>
+                  <th
+                    colspan='2'
+                    scope='row'
+                    style='border:1px solid rgb(160 160 160); padding:8px 10px'
+                  >1</th>
+                  <td
+                    colspan='2'
+                    style='border:1px solid rgb(160 160 160); padding:8px 10px; text-align:center'
+                  >{{name}}</td>
+                  <td
+                    colspan='2'
+                    style='border:1px solid rgb(160 160 160); padding:8px 10px; text-align:center'
+                  >{{price}}</td>
+                </tr>
+              {{/each}}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th
+                  scope='row'
+                  colspan='2'
+                  style='border:1px solid rgb(160 160 160); padding:8px 10px; text-align:center; background-color:#f9c9c9'
+                  align='right'
+                >TỔNG THANH TOÁN:</th>
+                <td
+                  colspan='2'
+                  style='border:1px solid rgb(160 160 160); padding:8px 10px; font-weight:bold; background-color:#f9c9c9'
+                >33</td>
+              </tr>
+            </tfoot>
+          </table>
+        </td>
+      </tr>
     </table>
-    <p>TOTALPAY: {{totalPay}}</p>
+    <p>Xin chân thành cảm ơn bạn đã đặt hàng!</p> --}}
+    <div>
+      <div style='width:700px'>
 
-    <p>Shipping to:</p>
+        <h2 align='center'>ĐƠN ĐẶT HÀNG ONLINE -
+          <a
+            href='https://huythanhjewerly.com.vn/'
+            target='_blank'
+            data-saferedirecturl='https://www.google.com/url?q=https://leeandtee.vn/&amp;source=gmail&amp;ust=1720502479970000&amp;usg=AOvVaw12rpWOTBAMuwW4t6Pqf53M'
+          >https://huythanhjewerly.com.vn/</a></h2>
+        {{#with customer}}
+          <h3 align='center'>Mã đơn hàng: {{_id}} </h3>
+          <hr />
+          <table width='700' border='1' cellspacing='0' cellpadding='5'>
+            <tbody><tr>
+                <td width='33.3%' align='center' bgcolor='#000'><strong><font
+                      color='#FFFFFF'
+                    >THÔNG TIN KHÁCH HÀNG</font></strong></td>
+                <td width='33.3%' align='center' bgcolor='#000'><strong><font
+                      color='#FFFFFF'
+                    >THÔNG TIN NHẬN HÀNG</font></strong></td>
+                <td width='33.3%' align='center' bgcolor='#000'><strong><font
+                      color='#FFFFFF'
+                    >VẬN CHUYỂN &amp; THANH TOÁN</font></strong></td>
+              </tr>
+              <tr>
+                <td valign='top'>
+                  <p>Tên khách hàng:<br /><strong>{{name}}</strong></p>
+                  <p>Địa chỉ: <br /><strong>{{address}}</strong></p>
+                  <p>Email:
+                    <strong><a
+                        href='mailto:Lexuanngoc2207@gmail.com'
+                        target='_blank'
+                      >{{email}}</a></strong></p>
+                  <p>Điện thoại: <strong>{{phone}}</strong></p>
+                  <p>Ghi chú: <br />{{note}}</p>
+                </td>
+                <td valign='top'>
+                  <p>Tên khách hàng: <br /><strong>Lê Xuân Ngọc</strong></p>
+                  <p>Địa chỉ:<br /><strong>Số 10 - Đường số 10, Quận 2, Hồ Chí
+                      Minh</strong></p>
+                  <p>Email:
+                    <br /><strong><a
+                        href='mailto:Lexuanngoc2207@gmail.com'
+                        target='_blank'
+                      >Lexuanngoc2207@gmail.com</a></strong></p>
+                  <p>Điện thoại: <br /><strong>0359523030</strong></p>
+                </td>
+                <td valign='top'>
+                  <p>HÌNH THỨC THANH TOÁN:</p>
+                  <strong> Thanh toán tiền mặt khi nhận hàng (COD)</strong><br
+                  />
+                  <br /><br />
+                  HÌNH THỨC VẬN CHUYỂN:<br />
+                  <strong>Phí vận chuyển được cung cấp theo bảng giá của đơn vị
+                    vận chuyển.</strong>
+                  <p></p><p><img
+                      height='50'
+                      src='https://ci3.googleusercontent.com/meips/ADKq_NZaKz06xa5T2M2BXPQBVEOnUfN_t2RdzT_6A2hcLEcm8K6MaRylCgn1z3fwX3OUuCssXmjRcaBOgvwMpelGbtJe5qOAjV0As1miNe8=s0-d-e1-ft#https://leeandtee.vn/uploads/images/hoptac/ahamove.png'
+                      alt='Đơn vị vận chuyển Ahamove'
+                      class='CToWUd'
+                      data-bit='iit'
+                    />
+                    <img
+                      height='50'
+                      src='https://ci3.googleusercontent.com/meips/ADKq_NbJqDVuHAMkMhVkXEMhfPfMwtQ-vJ-D4AKYsOYAxBnoP2RVGAixAaNm0vlBio259VzHWtZN22YJ6YC9oGVs9UDpb5RGPA4DdeA0_SXhVefeaQ=s0-d-e1-ft#https://leeandtee.vn/uploads/images/hoptac/Grab-express.png'
+                      alt='Giao hàng nội thành Grab'
+                      class='CToWUd'
+                      data-bit='iit'
+                    />
+                    <b><img
+                        height='50'
+                        src='https://ci3.googleusercontent.com/meips/ADKq_NZRbJGe4QB6Sxe5WpCLm9FZZoxjn2pjF2IUHr7kLfjBtsddWuwyE8wbTFgnRE0anzVmEohC0OeAKCoMieEMArzg6p5RWiWQlUo=s0-d-e1-ft#https://leeandtee.vn/uploads/images/hoptac/ghtk.png'
+                        alt='Giao hàng tiếp kiệm'
+                        class='CToWUd'
+                        data-bit='iit'
+                      /></b></p><p></p>
+                </td>
+              </tr>
+            </tbody></table>
+        {{/with}}
+        <br />
+        <h3>THÔNG TIN SẢN PHẨM</h3>
+        {{#each products}}
+          <table width='100%' border='1' cellpadding='5' cellspacing='0'>
+            <tbody><tr bgcolor='#f2f2f2'>
 
-    <address>
-      {{customer.address}}
-    </address>
-    {{!-- <p>Total: ${{order.total}}</p> --}}
-    <p>Thank you for shopping with us!</p>
+                <td align='center'><strong>Tên sản phẩm</strong></td>
+                <td align='center'><strong>Giá sản phẩm</strong></td>
+                <td align='center'><strong>Số lượng</strong></td>
+                <td align='center'><strong>Thành tiền</strong></td>
+              </tr>
+              <tr>
+                <td>
+                  <a target='_blank'>{{name}}</a>
+                </td>
+                <td nowrap=''>{{price}} VNĐ</td>
+                <td nowrap='' align='center'>{{quantity}}</td>
+                <td nowrap=''>{{total}}VNĐ</td>
+              </tr>
+            </tbody></table>
+        {{/each}}
+
+        <tr>
+          <td colspan='5' align='right'>
+            <p><strong>Tổng giá sản phẩm: {{totalPay}}</strong>&nbsp;</p>
+            <hr />
+            <h3><strong>Tổng tiền:
+                <font color='#FF0000'>{{totalPay}}</font></strong>
+            </h3>
+          </td>
+        </tr>
+      </div>
+      <br />
+      <strong><a
+          href='http://huythanhjewerly.com.vn'
+          target='_blank'
+          data-saferedirecturl='https://www.google.com/url?q=http://LEEANTEE.VN&amp;source=gmail&amp;ust=1720502479970000&amp;usg=AOvVaw3FjE9ogIZqYUB5LtCeIini'
+        >HUYTHANH JEWERLY</a></strong><br />
+      Địa chỉ văn phòng: 206/12 Đồng Đen, P.14, Quận Tân Bình, Tp.Hồ Chí Minh<br
+      />
+      Điện thoại:
+      <strong>089.9999.12323</strong><br />
+      Email:
+      <strong><a
+          href='mailto:huythanhjewerlu@com.vn'
+          target='_blank'
+        >huythanhjewerly@gmail.vn</a></strong><br />
+      Website:
+      <a
+        target='_blank'
+        data-saferedirecturl='https://www.google.com/url?q=https://leeandtee.vn/&amp;source=gmail&amp;ust=1720502479970000&amp;usg=AOvVaw12rpWOTBAMuwW4t6Pqf53M'
+      >https://huythanhjewerly.com.vn/</a>
+
+    </div>
   </body>
 </html>
